@@ -26,4 +26,9 @@ class Controller(
 
     @GetMapping("/departments")
     fun getAllDepts() = departmentService.getAllDepts()
+
+    @PutMapping("/employee/{id}")
+    fun updateEmployee(@PathVariable("id") id: Int, @RequestBody updateEmployee: EmployeeUpdateReq) {
+        employeeService.updateEmployee(id, updateEmployee)
+    }
 }

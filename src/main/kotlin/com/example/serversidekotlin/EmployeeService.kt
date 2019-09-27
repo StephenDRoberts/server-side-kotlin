@@ -27,4 +27,14 @@ class EmployeeService {
                 .filter { it.age >= minAge ?: Int.MIN_VALUE}
                 .filter { it.salary >= minSalary ?: Double.MIN_VALUE}
 
+    fun updateEmployee(id: Int, updateEmployee: EmployeeUpdateReq){
+        //!! ensures that employee with that ID is in our DB
+        val employeeOnDb = employeeDb[id]!!
+
+        employeeDb[id] = Employee(employeeOnDb.id, employeeOnDb.name, employeeOnDb.age,
+            updateEmployee.dept ?: employeeOnDb.dept,
+            updateEmployee.salary ?: employeeOnDb.salary
+        )
+    }
+
 }
