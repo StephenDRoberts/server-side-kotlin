@@ -6,14 +6,24 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class Controller(
-    private val employeeService: EmployeeService = EmployeeService()
+    private val employeeService: EmployeeService = EmployeeService(),
+    private val departmentService: DepartmentService = DepartmentService(employeeService)
 ) {
     @PostMapping("/employee")
-    fun createEmployee(@RequestBody employee: Employee): ResponseEntity<String>{
+    fun createEmployee(@RequestBody employee: Employee): ResponseEntity<String> {
         employeeService.createEmployee(employee)
         return ResponseEntity.status(HttpStatus.CREATED).build<String>()
     }
 
     @GetMapping("/employee/{id}")
     fun getEmployee(@PathVariable("id") id: Int) = employeeService.getEmployee(id)
+
+    @GetMapping("/employee")
+    fun getAllEmployees(
+        @RequestParam("minAge", required = false) minAge: Int?,
+        @RequestParam("minSalary", required = false) minSalary: Double?
+    ) = employeeService.getAllEmployees(minAge, minSalary)
+
+    @GetMapping("/departments")
+    fun getAllDepts() = departmentService.getAllDepts()
 }
